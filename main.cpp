@@ -3,7 +3,7 @@
 struct Node {
     std::string lastName, firstName, insuranceType, address, dateVisited, SSN;
     struct Node *next;
-}*front = NULL, *rear = NULL;
+}*front = NULL, *rear = NULL, *current = NULL;
 
 
 void enqueue(std::string lname, std::string fname, std::string ins, std::string adrs, std::string dvisit, std::string soc){
@@ -19,10 +19,10 @@ void enqueue(std::string lname, std::string fname, std::string ins, std::string 
         t->SSN = soc;
         t->next = NULL;
         if(front == NULL){
-            front = rear = t;
+            front = rear = current = t;
         } else {
             rear->next = t;
-            rear = t;
+            rear = current = t;
         }
     }
 }
@@ -32,6 +32,11 @@ int dequeue(){
     struct Node *temp;
     if(front == NULL){
         std::cout << "The queue is empty" << std::endl;
+    } else if(current == front) {
+        current++;
+        temp = front;
+        front = front->next;
+        delete temp;
     } else {
         temp = front;
         front = front->next;
@@ -44,20 +49,24 @@ void display(){
     struct Node *p = front;
     while(p!=NULL){
         std::cout <<
-        "Last name: " << p->lastName <<
+        "\nLast name: " << p->lastName <<
         "\nFirst name: " << p->firstName <<
         "\nInsurance type: " << p->insuranceType <<
         "\nAddress: " << p->address <<
         "\nDate Visited: " << p->dateVisited <<
         "\nSocial Security Number: " << p->SSN << std::endl;
         p = p->next;
-        std::cout << "\n";
     }
+    std::cout << "\n---------------------------\n";
 }
 
-// void peek(){
-
-// }
+void nextPatient(){
+    if(current != rear){
+        current--;
+    } else {
+        std::cout << "We are viewing the last patient" << std::endl;
+    }
+}
 
 int countPatients(struct Node *p){
     if(p!=NULL){
@@ -83,17 +92,17 @@ int main() {
         switch(choice)
         {
         case 1:
-            std::cout << "Enter Patient Last name: ";
+            std::cout << "\nEnter Patient Last name: ";
             std::cin >> lname;
-            std::cout << "Enter Patient first name: ";
+            std::cout << "\nEnter Patient first name: ";
             std::cin >> fname;
-            std::cout << "Enter Patient Insurance Type: ";
+            std::cout << "\nEnter Patient Insurance Type: ";
             std::cin >> ins;
-            std::cout << "Enter Patient Address: ";
+            std::cout << "\nEnter Patient Address: ";
             std::cin >> adrs;
-            std::cout << "Enter Patient Date visited: ";
+            std::cout << "\nEnter Patient Date visited: ";
             std::cin >> dvisit;
-            std::cout << "Enter Patient Social SN: ";
+            std::cout << "\nEnter Patient Social SN: ";
             std::cin >> soc;
             enqueue(lname, fname, ins, adrs, dvisit, soc);
             break;
@@ -104,7 +113,10 @@ int main() {
             display();
             break;
         case 4:
-            peek();
+            nextPatient();
+            break;
+        case 5:
+            countPatients(front);
             break;
         default:
             std::cout << "Enter a valid choice";
