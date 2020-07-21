@@ -55,6 +55,17 @@ void display(){
     }
 }
 
+// void peek(){
+
+// }
+
+int countPatients(struct Node *p){
+    if(p!=NULL){
+        return countPatients(p->next) + 1;
+    } else {
+        return 0;
+    }
+}
 
 int main() {
     std::string lname, fname, ins, adrs, dvisit, soc;
@@ -62,9 +73,11 @@ int main() {
     do {
         std::cout << "Menu\n";
         std::cout << "1. Add Patient\n";
-        std::cout << "2. Dequeue\n";
-        std::cout << "3. Display\n";
-        std::cout << "4. Exit\n";
+        std::cout << "2. Delete Patient\n";
+        std::cout << "3. Display all patients\n";
+        std::cout << "4. Next patient\n";
+        std::cout << "5. Total patients\n";
+        std::cout << "6. Exit\n";
         std::cout << "Enter choice: ";
         std::cin >> choice;
         switch(choice)
@@ -90,10 +103,13 @@ int main() {
         case 3:
             display();
             break;
+        case 4:
+            peek();
+            break;
         default:
             std::cout << "Enter a valid choice";
         }
-    }while(choice<5);
+    }while(choice<7);
 
   return 0;
 }
